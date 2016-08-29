@@ -88,7 +88,7 @@ func saveWav(tape []*zxtape.TapeBlock, filePath string, freq int) error {
 
 	var soundBuffer bytes.Buffer
 
-	fmt.Print("Detected : ")
+	fmt.Print("Detected data blocks : ")
 
 	for index, tape := range tape {
 		if index > 0 || silenceOnStart {
