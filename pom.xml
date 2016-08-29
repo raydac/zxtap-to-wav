@@ -1,0 +1,206 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <groupId>com.igormaznitsa</groupId>
+  <artifactId>zxtap-to-wav</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>mvn-golang</packaging>
+  
+  <name>ZX TAP to WAV</name>
+  <description>Converter of ZX TAP files into WAV files</description>
+  
+  <properties>
+    <base.target.name>zxtap2wav</base.target.name>
+    <mvngolang.version>2.1.2-SNAPSHOT</mvngolang.version>
+    <golang.sdk>1.7</golang.sdk>
+  </properties>
+
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/raydac/zxtap-to-wav/issues</url>
+  </issueManagement>
+
+  <prerequisites>
+    <maven>${mvn.version}</maven>
+  </prerequisites>
+
+  <developers>
+    <developer>
+      <id>raydac</id>
+      <name>Igor Maznitsa</name>
+      <email>rrg4400@gmail.com</email>
+      <url>http://www.igormaznitsa.com</url>
+      <timezone>+3</timezone>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
+    
+  <scm>
+    <url>https://github.com/raydac/mvn-golang</url>
+    <connection>scm:git:git://github.com/raydac/zxtap-to-wav.git</connection>
+    <developerConnection>scm:git:git@github.com:raydac/zxtap-to-wav.git</developerConnection>
+  </scm>
+
+  <organization>
+    <name>Igor Maznitsa</name>
+    <url>http://www.igormaznitsa.com</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <profiles>
+    <profile>
+      <id>golang-run-main</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.igormaznitsa</groupId>
+            <artifactId>mvn-golang-wrapper</artifactId>
+            <version>${mvngolang.version}</version>
+            <executions>
+              <execution>
+                <id>run-main</id>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <packages>
+                    <app>main.go</app>
+                  </packages>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>publish</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.igormaznitsa</groupId>
+            <artifactId>mvn-golang-wrapper</artifactId>
+            <version>${mvngolang.version}</version>
+            <executions>
+              <execution>
+                <id>default-build</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>build-for-linux64</id>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <configuration>
+                  <targetOs>linux</targetOs>
+                  <targetArch>amd64</targetArch>
+                  <resultName>${base.target.name}-linux-amd64</resultName>
+                  <packages>
+                    <app>main.go</app>
+                  </packages>
+                </configuration>
+              </execution>
+              <execution>
+                <id>build-for-linux386</id>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <configuration>
+                  <targetOs>linux</targetOs>
+                  <targetArch>386</targetArch>
+                  <resultName>${base.target.name}-linux-386</resultName>
+                  <packages>
+                    <app>main.go</app>
+                  </packages>
+                </configuration>
+              </execution>
+              <execution>
+                <id>build-for-windows386</id>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <configuration>
+                  <targetOs>windows</targetOs>
+                  <targetArch>386</targetArch>
+                  <resultName>${base.target.name}-windows-386.exe</resultName>
+                  <packages>
+                    <app>main.go</app>
+                  </packages>
+                </configuration>
+              </execution>
+              <execution>
+                <id>build-for-windows64</id>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <configuration>
+                  <targetOs>windows</targetOs>
+                  <targetArch>amd64</targetArch>
+                  <resultName>${base.target.name}-windows-amd64.exe</resultName>
+                  <packages>
+                    <app>main.go</app>
+                  </packages>
+                </configuration>
+              </execution>
+              <execution>
+                <id>build-for-macos386</id>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <configuration>
+                  <targetOs>darwin</targetOs>
+                  <targetArch>386</targetArch>
+                  <resultName>${base.target.name}-macos-386</resultName>
+                  <packages>
+                    <app>main.go</app>
+                  </packages>
+                </configuration>
+              </execution>
+              <execution>
+                <id>build-for-macos64</id>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <configuration>
+                  <targetOs>darwin</targetOs>
+                  <targetArch>amd64</targetArch>
+                  <resultName>${base.target.name}-macos-amd64</resultName>
+                  <packages>
+                    <app>main.go</app>
+                  </packages>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <build>
+    <sourceDirectory>${basedir}${file.separator}src</sourceDirectory>
+    <directory>${basedir}${file.separator}bin</directory>
+    <plugins>
+      <plugin>
+        <groupId>com.igormaznitsa</groupId>
+        <artifactId>mvn-golang-wrapper</artifactId>
+        <version>${mvngolang.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <goVersion>${golang.sdk}</goVersion>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
