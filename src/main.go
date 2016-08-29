@@ -23,14 +23,14 @@ var fileInName string
 var fileOutName string
 var amplify bool
 var gapBetweenFiles int
-var silenceBefireFirst bool
+var silenceOnStart bool
 var freq int
 
 func init() {
 	flag.StringVar(&fileInName, "i", "", "source TAP file")
 	flag.StringVar(&fileOutName, "o", "", "target WAV file")
 	flag.BoolVar(&amplify, "a", false, "amplify sound signal")
-	flag.BoolVar(&silenceBefireFirst, "s", false, "add silence before the first file")
+	flag.BoolVar(&silenceOnStart, "s", false, "add silence before the first file")
 	flag.IntVar(&gapBetweenFiles, "g", 1, "time gap between sound blocks, in seconds")
 	flag.IntVar(&freq, "f", 22050, "frequency of result wav, in Hz")
 	flag.Usage = func() {
@@ -88,8 +88,11 @@ func saveWav(tape []*zxtape.TapeBlock, filePath string, freq int) error {
 
 	var soundBuffer bytes.Buffer
 
+	fmt.Print("Detected : ")
+
 	for index, tape := range tape {
-		if index > 0 && !silenceBefireFirst {
+		if index > 0 || silenceOnStart {
+			fmt.Print(".")
 			for i := 0; i < freq*gapBetweenFiles; i++ {
 				soundBuffer.WriteByte(0x80)
 			}
@@ -99,7 +102,37 @@ func saveWav(tape []*zxtape.TapeBlock, filePath string, freq int) error {
 		if err != nil {
 			return err
 		}
+
+		if (*tape.Data)[0] < 128 {
+			if len(*tape.Data) == 18 {
+				switch (*tape.Data)[1] {
+				case 0:
+					fmt.Print("P")
+				case 1:
+					fmt.Print("N")
+				case 2:
+					fmt.Print("A")
+				case 3:
+					{
+						if (*tape.Data)[12] == 0x00 && (*tape.Data)[13] == 0x1B && (*tape.Data)[14] == 0x00 && (*tape.Data)[15] == 0x40 {
+							fmt.Print("$")
+						} else {
+							fmt.Print("C")
+						}
+
+					}
+				default:
+					fmt.Print("X")
+				}
+			} else {
+				fmt.Print("u")
+			}
+		} else {
+			fmt.Print("D")
+		}
 	}
+
+	fmt.Print("\n")
 
 	var data []byte = soundBuffer.Bytes()
 	return wav.WriteWav(file, freq, &data)
