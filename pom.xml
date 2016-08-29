@@ -12,7 +12,7 @@
   
   <properties>
     <base.target.name>zxtap2wav</base.target.name>
-    <mvngolang.version>2.1.2-SNAPSHOT</mvngolang.version>
+    <mvngolang.version>2.1.1</mvngolang.version>
     <golang.sdk>1.7</golang.sdk>
   </properties>
 
