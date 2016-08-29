@@ -92,7 +92,9 @@ func saveWav(tape []*zxtape.TapeBlock, filePath string, freq int) error {
 
 	for index, tape := range tape {
 		if index > 0 || silenceOnStart {
-			fmt.Print(".")
+			for i := 0; i < gapBetweenFiles; i++ {
+				fmt.Print(".")
+			}
 			for i := 0; i < freq*gapBetweenFiles; i++ {
 				soundBuffer.WriteByte(0x80)
 			}
