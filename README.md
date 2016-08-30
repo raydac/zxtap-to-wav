@@ -5,7 +5,7 @@
 Easy command line utility to convert [.TAP files (a data format for ZX-Spectrum emulator)](http://fileformats.archiveteam.org/wiki/TAP_(ZX_Spectrum)) into [sound WAV file](https://en.wikipedia.org/wiki/WAV).
 
 # How to build?
-Just clone the project and use maven `maven package -Ppublish` cpmmand or [load prebuit version from the latest release](https://github.com/raydac/zxtap-to-wav/releases/tag/1.0.0).
+Just clone the project and use [maven](https://maven.apache.org/) `mvn package -Ppublish` command or [load needed prebuit version from the latest release](https://github.com/raydac/zxtap-to-wav/releases/tag/1.0.0).
 
 # Arguments
 ```
