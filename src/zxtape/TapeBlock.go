@@ -3,36 +3,13 @@ package zxtape
 import (
 	"bytes"
 	"io"
+	"wav"
 	"zx"
 )
 
 type TapeBlock struct {
 	Data     *[]byte
 	Checksum byte
-}
-
-func round(val float64) int64 {
-	if val < .0 {
-		val -= .5
-	} else {
-		val += .5
-	}
-	return int64(val)
-}
-
-func doSignal(writer *bytes.Buffer, level byte, clks int, freq int) error {
-	var sampleNanosec float64 = float64(1000000000) / float64(freq)
-	var cpuClkNanosec float64 = 286
-
-	samples := round((cpuClkNanosec * float64(clks)) / sampleNanosec)
-
-	for i := int64(0); i < samples; i++ {
-		err := writer.WriteByte(level)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 func writeDataByte(data byte, hi byte, lo byte, writer *bytes.Buffer, freq int) error {
@@ -50,10 +27,10 @@ func writeDataByte(data byte, hi byte, lo byte, writer *bytes.Buffer, freq int) 
 			len = PULSELEN_ONE
 		}
 
-		if err := doSignal(writer, hi, len, freq); err != nil {
+		if err := wav.DoSignal(writer, hi, len, freq); err != nil {
 			return err
 		}
-		if err := doSignal(writer, lo, len, freq); err != nil {
+		if err := wav.DoSignal(writer, lo, len, freq); err != nil {
 			return err
 		}
 		mask >>= 1
@@ -90,20 +67,20 @@ func (t *TapeBlock) SaveSoundData(amplify bool, soundBuffer *bytes.Buffer, freq 
 	}
 
 	for i := 0; i < pilotImpulses; i++ {
-		if err = doSignal(soundBuffer, HI, PULSELEN_PILOT, freq); err != nil {
+		if err = wav.DoSignal(soundBuffer, HI, PULSELEN_PILOT, freq); err != nil {
 			return err
 		}
 
-		if err = doSignal(soundBuffer, LO, PULSELEN_PILOT, freq); err != nil {
+		if err = wav.DoSignal(soundBuffer, LO, PULSELEN_PILOT, freq); err != nil {
 			return err
 		}
 	}
 
-	if err = doSignal(soundBuffer, HI, PULSELEN_SYNC1, freq); err != nil {
+	if err = wav.DoSignal(soundBuffer, HI, PULSELEN_SYNC1, freq); err != nil {
 		return err
 	}
 
-	if err = doSignal(soundBuffer, LO, PULSELEN_SYNC2, freq); err != nil {
+	if err = wav.DoSignal(soundBuffer, LO, PULSELEN_SYNC2, freq); err != nil {
 		return err
 	}
 
@@ -117,7 +94,7 @@ func (t *TapeBlock) SaveSoundData(amplify bool, soundBuffer *bytes.Buffer, freq 
 		return err
 	}
 
-	if err = doSignal(soundBuffer, HI, PULSELEN_SYNC3, freq); err != nil {
+	if err = wav.DoSignal(soundBuffer, HI, PULSELEN_SYNC3, freq); err != nil {
 		return err
 	}
 

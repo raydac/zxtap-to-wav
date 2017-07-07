@@ -1,6 +1,7 @@
 package wav
 
 import (
+	"bytes"
 	"encoding/binary"
 	"io"
 )
@@ -71,5 +72,29 @@ func WriteWav(writer io.Writer, freq int, sndData *[]byte) error {
 		return err
 	}
 
+	return nil
+}
+
+func round(val float64) int64 {
+	if val < .0 {
+		val -= .5
+	} else {
+		val += .5
+	}
+	return int64(val)
+}
+
+func DoSignal(buffer *bytes.Buffer, signalLevel byte, clks int, freq int) error {
+	var sampleNanosec float64 = float64(1000000000) / float64(freq)
+	var cpuClkNanosec float64 = 286
+
+	samples := round((cpuClkNanosec * float64(clks)) / sampleNanosec)
+
+	for i := int64(0); i < samples; i++ {
+		err := buffer.WriteByte(signalLevel)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }

@@ -1,19 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <groupId>com.igormaznitsa</groupId>
   <artifactId>zxtap-to-wav</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>mvn-golang</packaging>
-  
+
   <name>ZX TAP to WAV</name>
   <description>Converter of ZX TAP files into WAV files</description>
-  
+
   <properties>
     <base.target.name>zxtap2wav</base.target.name>
-    <mvngolang.version>2.1.1</mvngolang.version>
-    <golang.sdk>1.7</golang.sdk>
+    <mvngolang.version>2.1.5</mvngolang.version>
+    <golang.sdk>1.8.3</golang.sdk>
   </properties>
 
   <issueManagement>
@@ -37,7 +37,7 @@
       </roles>
     </developer>
   </developers>
-    
+
   <scm>
     <url>https://github.com/raydac/mvn-golang</url>
     <connection>scm:git:git://github.com/raydac/zxtap-to-wav.git</connection>
@@ -102,6 +102,7 @@
                   <goal>build</goal>
                 </goals>
                 <configuration>
+
                   <targetOs>linux</targetOs>
                   <targetArch>amd64</targetArch>
                   <resultName>${base.target.name}-linux-amd64</resultName>
@@ -116,6 +117,7 @@
                   <goal>build</goal>
                 </goals>
                 <configuration>
+                  <strip>true</strip>
                   <targetOs>linux</targetOs>
                   <targetArch>386</targetArch>
                   <resultName>${base.target.name}-linux-386</resultName>
@@ -130,6 +132,7 @@
                   <goal>build</goal>
                 </goals>
                 <configuration>
+                  <strip>true</strip>
                   <targetOs>windows</targetOs>
                   <targetArch>386</targetArch>
                   <resultName>${base.target.name}-windows-386.exe</resultName>
@@ -144,6 +147,7 @@
                   <goal>build</goal>
                 </goals>
                 <configuration>
+                  <strip>true</strip>
                   <targetOs>windows</targetOs>
                   <targetArch>amd64</targetArch>
                   <resultName>${base.target.name}-windows-amd64.exe</resultName>
@@ -158,6 +162,7 @@
                   <goal>build</goal>
                 </goals>
                 <configuration>
+                  <strip>true</strip>
                   <targetOs>darwin</targetOs>
                   <targetArch>386</targetArch>
                   <resultName>${base.target.name}-macos-386</resultName>
@@ -172,6 +177,7 @@
                   <goal>build</goal>
                 </goals>
                 <configuration>
+                  <strip>true</strip>
                   <targetOs>darwin</targetOs>
                   <targetArch>amd64</targetArch>
                   <resultName>${base.target.name}-macos-amd64</resultName>
