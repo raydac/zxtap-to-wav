@@ -66,11 +66,21 @@ func (t *TapeBlock) SaveSoundData(amplify bool, soundBuffer *bytes.Buffer, freq 
 		LO = 0x40
 	}
 
+	var signalState = HI
+
 	for i := 0; i < pilotImpulses; i++ {
-		if err = wav.DoSignal(soundBuffer, HI, PULSELEN_PILOT, freq); err != nil {
+		if err = wav.DoSignal(soundBuffer, signalState, PULSELEN_PILOT, freq); err != nil {
 			return err
 		}
 
+		if signalState == HI {
+			signalState = LO
+		} else {
+			signalState = HI
+		}
+	}
+
+	if signalState == LO {
 		if err = wav.DoSignal(soundBuffer, LO, PULSELEN_PILOT, freq); err != nil {
 			return err
 		}
