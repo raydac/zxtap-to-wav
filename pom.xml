@@ -12,8 +12,8 @@
 
   <properties>
     <base.target.name>zxtap2wav</base.target.name>
-    <mvngolang.version>2.1.7</mvngolang.version>
-    <golang.sdk>1.10</golang.sdk>
+    <mvngolang.version>2.2.0</mvngolang.version>
+    <golang.sdk>1.11.4</golang.sdk>
   </properties>
 
   <issueManagement>
@@ -87,7 +87,7 @@
       <id>publish</id>
       <build>
         <plugins>
-          <plugin>
+            <plugin>
             <groupId>com.igormaznitsa</groupId>
             <artifactId>mvn-golang-wrapper</artifactId>
             <version>${mvngolang.version}</version>
