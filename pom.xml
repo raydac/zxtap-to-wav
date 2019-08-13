@@ -12,8 +12,8 @@
 
   <properties>
     <base.target.name>zxtap2wav</base.target.name>
-    <mvngolang.version>2.2.0</mvngolang.version>
-    <golang.sdk>1.11.4</golang.sdk>
+    <mvngolang.version>2.3.3</mvngolang.version>
+    <golang.sdk>1.12.8</golang.sdk>
   </properties>
 
   <issueManagement>
