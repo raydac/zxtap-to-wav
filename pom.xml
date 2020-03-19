@@ -12,8 +12,9 @@
 
   <properties>
     <base.target.name>zxtap2wav</base.target.name>
-    <mvngolang.version>2.3.3</mvngolang.version>
-    <golang.sdk>1.12.8</golang.sdk>
+    <mvngolang.version>2.3.4</mvngolang.version>
+    <golang.sdk>1.14</golang.sdk>
+    <do.strip>false</do.strip>
   </properties>
 
   <issueManagement>
@@ -117,7 +118,7 @@
                   <goal>build</goal>
                 </goals>
                 <configuration>
-                  <strip>true</strip>
+                  <strip>${do.strip}</strip>
                   <targetOs>linux</targetOs>
                   <targetArch>386</targetArch>
                   <resultName>${base.target.name}-linux-386</resultName>
@@ -132,7 +133,7 @@
                   <goal>build</goal>
                 </goals>
                 <configuration>
-                  <strip>true</strip>
+                  <strip>${do.strip}</strip>
                   <targetOs>windows</targetOs>
                   <targetArch>386</targetArch>
                   <resultName>${base.target.name}-windows-386.exe</resultName>
@@ -147,7 +148,7 @@
                   <goal>build</goal>
                 </goals>
                 <configuration>
-                  <strip>true</strip>
+                  <strip>${do.strip}</strip>
                   <targetOs>windows</targetOs>
                   <targetArch>amd64</targetArch>
                   <resultName>${base.target.name}-windows-amd64.exe</resultName>
@@ -162,7 +163,7 @@
                   <goal>build</goal>
                 </goals>
                 <configuration>
-                  <strip>true</strip>
+                  <strip>${do.strip}</strip>
                   <targetOs>darwin</targetOs>
                   <targetArch>386</targetArch>
                   <resultName>${base.target.name}-macos-386</resultName>
@@ -177,7 +178,7 @@
                   <goal>build</goal>
                 </goals>
                 <configuration>
-                  <strip>true</strip>
+                  <strip>${do.strip}</strip>
                   <targetOs>darwin</targetOs>
                   <targetArch>amd64</targetArch>
                   <resultName>${base.target.name}-macos-amd64</resultName>
