@@ -12,8 +12,8 @@
 
   <properties>
     <base.target.name>zxtap2wav</base.target.name>
-    <mvngolang.version>2.3.4</mvngolang.version>
-    <golang.sdk>1.14</golang.sdk>
+    <mvngolang.version>2.3.6</mvngolang.version>
+    <golang.sdk>1.15.6</golang.sdk>
     <do.strip>false</do.strip>
   </properties>
 
@@ -152,21 +152,6 @@
                   <targetOs>windows</targetOs>
                   <targetArch>amd64</targetArch>
                   <resultName>${base.target.name}-windows-amd64.exe</resultName>
-                  <packages>
-                    <app>main.go</app>
-                  </packages>
-                </configuration>
-              </execution>
-              <execution>
-                <id>build-for-macos386</id>
-                <goals>
-                  <goal>build</goal>
-                </goals>
-                <configuration>
-                  <strip>${do.strip}</strip>
-                  <targetOs>darwin</targetOs>
-                  <targetArch>386</targetArch>
-                  <resultName>${base.target.name}-macos-386</resultName>
                   <packages>
                     <app>main.go</app>
                   </packages>
