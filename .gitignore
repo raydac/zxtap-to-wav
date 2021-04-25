@@ -10,5 +10,6 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-/.idea/
-/zxtap2wav.iml
+.idea
+*.iml
+bin

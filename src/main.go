@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
+	wav "github.com/raydac/zxtap-wav"
+	zxtape "github.com/raydac/zxtap-zxtape"
 	"io"
 	"log"
 	"os"
@@ -11,8 +13,6 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-	"wav"
-	"zxtape"
 )
 
 const __AUTHOR__ = "Igor Maznitsa (http://www.igormaznitsa.com)"

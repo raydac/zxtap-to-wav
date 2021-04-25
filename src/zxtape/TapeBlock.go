@@ -3,8 +3,8 @@ package zxtape
 import (
 	"bytes"
 	"io"
-	"wav"
-	"zx"
+	wav "github.com/raydac/zxtap-wav"
+	zx "github.com/raydac/zxtap-zx"
 )
 
 type TapeBlock struct {

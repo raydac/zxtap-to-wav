@@ -12,8 +12,8 @@
 
   <properties>
     <base.target.name>zxtap2wav</base.target.name>
-    <mvngolang.version>2.3.6</mvngolang.version>
-    <golang.sdk>1.15.6</golang.sdk>
+    <mvngolang.version>2.3.8</mvngolang.version>
+    <golang.sdk>1.16.3</golang.sdk>
     <do.strip>false</do.strip>
   </properties>
 
@@ -103,7 +103,6 @@
                   <goal>build</goal>
                 </goals>
                 <configuration>
-
                   <targetOs>linux</targetOs>
                   <targetArch>amd64</targetArch>
                   <resultName>${base.target.name}-linux-amd64</resultName>
@@ -167,6 +166,21 @@
                   <targetOs>darwin</targetOs>
                   <targetArch>amd64</targetArch>
                   <resultName>${base.target.name}-macos-amd64</resultName>
+                  <packages>
+                    <app>main.go</app>
+                  </packages>
+                </configuration>
+              </execution>
+              <execution>
+                <id>build-for-macos-arm64</id>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <configuration>
+                  <strip>${do.strip}</strip>
+                  <targetOs>darwin</targetOs>
+                  <targetArch>arm64</targetArch>
+                  <resultName>${base.target.name}-macos-arm64</resultName>
                   <packages>
                     <app>main.go</app>
                   </packages>
