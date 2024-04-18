@@ -6,7 +6,7 @@ Easy command line utility to convert [.TAP files (a data format for ZX-Spectrum 
 (Also there is [similar utility to convert binary files into WAV files for personal computer BK-0010](https://github.com/raydac/bkbin2wav))
 
 # How to build?
-Just clone the project and use [maven](https://maven.apache.org/) `mvn package -Ppublish` command or [load needed prebuit version from the latest release](https://github.com/raydac/zxtap-to-wav/releases/tag/1.0.1).
+Just clone the project and use [maven](https://maven.apache.org/) `mvn package -Ppublish` command or [load needed prebuit version from the latest release](https://github.com/raydac/zxtap-to-wav/releases/tag/1.0.2).
 
 # Arguments
 ```
