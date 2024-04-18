@@ -98,7 +98,7 @@
                 <phase>none</phase>
               </execution>
               <execution>
-                <id>build-for-linux64</id>
+                <id>build-for-linux-amd64</id>
                 <goals>
                   <goal>build</goal>
                 </goals>
@@ -106,6 +106,20 @@
                   <targetOs>linux</targetOs>
                   <targetArch>amd64</targetArch>
                   <resultName>${base.target.name}-linux-amd64</resultName>
+                  <packages>
+                    <app>main.go</app>
+                  </packages>
+                </configuration>
+              </execution>
+              <execution>
+                <id>build-for-linux-arm64</id>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <configuration>
+                  <targetOs>linux</targetOs>
+                  <targetArch>arm64</targetArch>
+                  <resultName>${base.target.name}-linux-arm64</resultName>
                   <packages>
                     <app>main.go</app>
                   </packages>
@@ -127,7 +141,7 @@
                 </configuration>
               </execution>
               <execution>
-                <id>build-for-windows386</id>
+                <id>build-for-windows-i386</id>
                 <goals>
                   <goal>build</goal>
                 </goals>
@@ -135,14 +149,14 @@
                   <strip>${do.strip}</strip>
                   <targetOs>windows</targetOs>
                   <targetArch>386</targetArch>
-                  <resultName>${base.target.name}-windows-386.exe</resultName>
+                  <resultName>${base.target.name}-windows-i386.exe</resultName>
                   <packages>
                     <app>main.go</app>
                   </packages>
                 </configuration>
               </execution>
               <execution>
-                <id>build-for-windows64</id>
+                <id>build-for-windows-amd64</id>
                 <goals>
                   <goal>build</goal>
                 </goals>
@@ -151,6 +165,21 @@
                   <targetOs>windows</targetOs>
                   <targetArch>amd64</targetArch>
                   <resultName>${base.target.name}-windows-amd64.exe</resultName>
+                  <packages>
+                    <app>main.go</app>
+                  </packages>
+                </configuration>
+              </execution>
+              <execution>
+                <id>build-for-windows-arm64</id>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <configuration>
+                  <strip>${do.strip}</strip>
+                  <targetOs>windows</targetOs>
+                  <targetArch>arm64</targetArch>
+                  <resultName>${base.target.name}-windows-arm64.exe</resultName>
                   <packages>
                     <app>main.go</app>
                   </packages>
