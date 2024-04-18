@@ -121,6 +121,10 @@ func ReadTapeBlock(reader io.Reader) (*TapeBlock, error) {
 		return nil, err
 	}
 
+    if length == 0 {
+        return nil, nil
+    }
+
 	data := make([]byte, length-1)
 
 	_, err = io.ReadAtLeast(reader, data, len(data))

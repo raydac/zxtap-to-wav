@@ -16,7 +16,7 @@ import (
 )
 
 const __AUTHOR__ = "Igor Maznitsa (http://www.igormaznitsa.com)"
-const __VERSION__ = "1.0.1"
+const __VERSION__ = "1.0.2"
 const __PROJECTURI__ = "https://github.com/raydac/zxtap-to-wav"
 
 var fileInName string
@@ -55,7 +55,9 @@ func ParseTap(tapReader io.Reader) ([]*zxtape.TapeBlock, error) {
 	for {
 		block, err := zxtape.ReadTapeBlock(tapReader)
 		if err == nil {
-			result = append(result, block)
+			if block != nil {
+				result = append(result, block)
+			}
 		} else {
 			if err == io.EOF {
 				break
