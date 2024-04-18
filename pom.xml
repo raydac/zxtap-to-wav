@@ -4,7 +4,7 @@
 
   <groupId>com.igormaznitsa</groupId>
   <artifactId>zxtap-to-wav</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.2-SNAPSHOT</version>
   <packaging>mvn-golang</packaging>
 
   <name>ZX TAP to WAV</name>
@@ -13,7 +13,7 @@
   <properties>
     <base.target.name>zxtap2wav</base.target.name>
     <mvngolang.version>2.3.10</mvngolang.version>
-    <golang.sdk>1.22.0</golang.sdk>
+    <golang.sdk>1.22.2</golang.sdk>
     <do.strip>true</do.strip>
   </properties>
 
