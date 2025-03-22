@@ -2,11 +2,18 @@
 [![PayPal donation](https://img.shields.io/badge/donation-PayPal-cyan.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=AHWJHJFBAWGL2)
 [![YooMoney donation](https://img.shields.io/badge/donation-Yoo.money-blue.svg)](https://yoomoney.ru/to/41001158080699)
 
-Easy command line utility to convert [.TAP files (a data format for ZX-Spectrum emulator)](http://fileformats.archiveteam.org/wiki/TAP_(ZX_Spectrum)) into [sound WAV file](https://en.wikipedia.org/wiki/WAV).
-(Also there is [similar utility to convert binary files into WAV files for personal computer BK-0010](https://github.com/raydac/bkbin2wav))
+A simple command-line utility that converts [.TAP](http://fileformats.archiveteam.org/wiki/TAP_(ZX_Spectrum)) files, a data format used by ZX Spectrum emulators, into [WAV](https://en.wikipedia.org/wiki/WAV) sound files.
+
+For a similar tool that converts binary files into WAV format for the BK-0010 personal computer, check out [bkbin2wav](https://github.com/raydac/bkbin2wav).
 
 # How to build?
-Just clone the project and use [maven](https://maven.apache.org/) `mvn package -Ppublish` command or [load needed prebuit version from the latest release](https://github.com/raydac/zxtap-to-wav/releases/tag/1.0.3).
+
+Simply clone the project and build it using Maven with the command:
+```bash
+mvn clean install -Ppublish
+```
+
+Alternatively, you can download [a prebuilt version from the latest release](https://github.com/raydac/zxtap-to-wav/releases/tag/1.0.3).
 
 # Arguments
 ```
