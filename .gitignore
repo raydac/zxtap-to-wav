@@ -13,3 +13,13 @@ buildNumber.properties
 .idea
 *.iml
 bin
+/.build/wav/go.mod
+/.build/wav/WavFile.go
+/.build/zx/go.mod
+/.build/zx/ZxReader.go
+/.build/zxtape/go.mod
+/.build/zxtape/TapeBlock.go
+/.build/zxtape/TapeBlock_test.go
+/.build/go.mod
+/.build/main.go
+/.build/main_test.go
