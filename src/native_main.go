@@ -3,12 +3,10 @@
 package main
 
 import (
-	"bytes"
 	"flag"
 	"fmt"
 	wav "github.com/raydac/zxtap-wav"
 	zxtape "github.com/raydac/zxtap-zxtape"
-	"io"
 	"log"
 	"os"
 	"path"
@@ -47,27 +45,6 @@ func header() {
 `, __PROJECTURI__, __AUTHOR__, __VERSION__)
 }
 
-func ParseTap(tapReader io.Reader) ([]*zxtape.TapeBlock, error) {
-	var result []*zxtape.TapeBlock
-
-	for {
-		block, err := zxtape.ReadTapeBlock(tapReader)
-		if err == nil {
-			if block != nil {
-				result = append(result, block)
-			}
-		} else {
-			if err == io.EOF {
-				break
-			} else {
-				return nil, err
-			}
-		}
-	}
-
-	return result, nil
-}
-
 func loadTapFile(filePath string) ([]*zxtape.TapeBlock, error) {
 
 	file, err := os.Open(filePath)
@@ -86,57 +63,15 @@ func saveWav(tape []*zxtape.TapeBlock, filePath string, freq int) error {
 	}
 	defer file.Close()
 
-	var soundBuffer bytes.Buffer
-
-	fmt.Print("Detected data blocks : ")
-
-	for index, tape := range tape {
-		if index > 0 || silenceOnStart {
-			for i := 0; i < gapBetweenFiles; i++ {
-				fmt.Print(".")
-			}
-			for i := 0; i < freq*gapBetweenFiles; i++ {
-				soundBuffer.WriteByte(0x80)
-			}
-		}
-
-		err = tape.SaveSoundData(amplify, &soundBuffer, freq)
-		if err != nil {
-			return err
-		}
-
-		if (*tape.Data)[0] < 128 {
-			if len(*tape.Data) == 18 {
-				switch (*tape.Data)[1] {
-				case 0:
-					fmt.Print("P")
-				case 1:
-					fmt.Print("N")
-				case 2:
-					fmt.Print("A")
-				case 3:
-					{
-						if (*tape.Data)[12] == 0x00 && (*tape.Data)[13] == 0x1B && (*tape.Data)[14] == 0x00 && (*tape.Data)[15] == 0x40 {
-							fmt.Print("$")
-						} else {
-							fmt.Print("C")
-						}
-
-					}
-				default:
-					fmt.Print("X")
-				}
-			} else {
-				fmt.Print("u")
-			}
-		} else {
-			fmt.Print("D")
-		}
+	consoleOutput := func(s string) {
+		fmt.Print(s)
 	}
 
-	fmt.Print("\n")
+	var data, errPrepare = PrepareWav(tape, amplify, gapBetweenFiles, silenceOnStart, freq, &consoleOutput)
+	if errPrepare != nil {
+		return errPrepare
+	}
 
-	var data []byte = soundBuffer.Bytes()
 	return wav.WriteWav(file, freq, &data)
 }
 

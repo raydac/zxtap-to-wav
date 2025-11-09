@@ -3,11 +3,11 @@
 package main
 
 import (
-    "syscall/js"
+	"syscall/js"
 )
 
 func ProcessFile(this js.Value, args []js.Value) interface{} {
-    return nil
+	return nil
 }
 
 func main() {
