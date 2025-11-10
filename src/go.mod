@@ -1,6 +1,6 @@
 module github.com/raydac/zxtap-to-wav
 
-go 1.16
+go 1.25
 
 require (
         github.com/raydac/zxtap-wav v1.0.1

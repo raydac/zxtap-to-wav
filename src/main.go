@@ -2,8 +2,8 @@ package main
 
 import (
 	"bytes"
+	zxtape "github.com/raydac/zxtap-zxtape"
 	"io"
-    zxtape "github.com/raydac/zxtap-zxtape"
 )
 
 const __AUTHOR__ = "Igor Maznitsa (http://www.igormaznitsa.com)"
@@ -29,6 +29,10 @@ func ParseTap(tapReader io.Reader) ([]*zxtape.TapeBlock, error) {
 	}
 
 	return result, nil
+}
+
+func BytesToReadCloser(data []byte) io.ReadCloser {
+	return io.NopCloser(bytes.NewReader(data))
 }
 
 func PrepareWav(tape []*zxtape.TapeBlock, amplify bool, gapBetweenFiles int, silenceOnStart bool, freq int, consumer *func(string)) ([]byte, error) {

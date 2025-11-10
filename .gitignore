@@ -23,3 +23,5 @@ bin
 /.build/go.mod
 /.build/main.go
 /.build/main_test.go
+/.build/native_main.go
+/.build/wasm_main.go
