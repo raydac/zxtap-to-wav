@@ -12,7 +12,7 @@ Simply clone the project and build it using Maven with the command:
 mvn clean install -Ppublish
 ```
 
-Alternatively, you can download [a prebuilt version from the latest release](https://github.com/raydac/zxtap-to-wav/releases/tag/1.0.3).
+Alternatively, you can download [a prebuilt version from the latest release](https://github.com/raydac/zxtap-to-wav/releases/tag/1.0.4).
 
 # Arguments
 ```
