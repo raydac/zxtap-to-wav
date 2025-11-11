@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZX TAP to WAV Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+        input[type="file"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+        }
+        .checkbox-group input {
+            width: auto;
+            margin-right: 8px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            display: none;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .loading {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        .ref {
+            margin-top: 2em;
+            text-align: center;
+        }
+        .ref a {
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>ZXTAP-to-WAV Converter</h1>
+
+    <div class="form-group">
+        <label for="fileInput">Choose TAP File:</label>
+        <input type="file" id="fileInput" accept=".tap">
+    </div>
+
+    <div class="form-group">
+        <div class="checkbox-group">
+            <input type="checkbox" id="amplify">
+            <label for="amplify" style="margin-bottom: 0;">Amplify (increase signal strength)</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="gap">Duration of silence between files (in seconds):</label>
+        <input type="number" id="gap" min="1" max="10" value="1">
+    </div>
+
+    <div class="form-group">
+        <div class="checkbox-group">
+            <input type="checkbox" id="silenceOnStart">
+            <label for="silenceOnStart" style="margin-bottom: 0;">Silence on start</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="frequency">Carrier wave frequency (Hz):</label>
+        <select id="frequency">
+            <option value="11025">11025 Hz</option>
+            <option value="22050" selected>22050 Hz</option>
+            <option value="32000">32000 Hz</option>
+            <option value="44100">44100 Hz</option>
+            <option value="48000">48000 Hz</option>
+        </select>
+    </div>
+
+    <button id="convertBtn" onclick="convertFile()" disabled>Loading code...</button>
+
+    <div id="result" class="result"></div>
+
+    <div class="ref">
+        <a href="https://github.com/raydac/zxtap-to-wav">https://github.com/raydac/zxtap-to-wav</a>
+    </div>
+</div>
+
+<!-- Go WASM exec helper -->
+<script type="text/javascript" src="./wasm_exec.js"></script>
+
+<script>
+    let wasmReady = false;
+
+    // Load Go WASM module
+    async function loadWasm() {
+        showResult('Loading WASM module...', 'loading');
+
+        try {
+            const go = new Go();
+            const response = await fetch('./zxtap2wav.wasm');
+            const buffer = await response.arrayBuffer();
+
+            const result = await WebAssembly.instantiate(buffer, go.importObject);
+
+            // Run the Go program
+            go.run(result.instance);
+
+            wasmReady = true;
+            showResult('WASM module loaded successfully', 'success');
+            console.log('Go WASM module loaded');
+
+            const button = document.getElementById("convertBtn");
+            button.innerHTML = "Convert";
+            button.disabled = false;
+        } catch (error) {
+            console.error('Error loading WASM:', error);
+            showResult('Error loading WASM module: ' + error.message, 'error');
+        }
+    }
+
+    // Load WASM on page load
+    loadWasm();
+
+    async function convertFile() {
+        const fileInput = document.getElementById('fileInput');
+        const amplify = document.getElementById('amplify').checked;
+        const gap = parseInt(document.getElementById('gap').value);
+        const silenceOnStart = document.getElementById('silenceOnStart').checked;
+        const frequency = parseInt(document.getElementById('frequency').value);
+
+        // Validate inputs
+        if (!fileInput.files.length) {
+            showResult('Please select a file first', 'error');
+            return;
+        }
+
+        if (gap < 0) {
+            showResult('Gap must be a positive number', 'error');
+            return;
+        }
+
+        if (!wasmReady) {
+            showResult('WASM module not loaded yet. Please wait...', 'error');
+            return;
+        }
+
+        // Check if ProcessTapArray function exists
+        if (typeof ProcessTapArray !== 'function') {
+            showResult('ProcessTapArray function not found in WASM module', 'error');
+            return;
+        }
+
+        try {
+            showResult('Processing...', 'loading');
+
+            // Read file as byte array
+            const file = fileInput.files[0];
+            const arrayBuffer = await file.arrayBuffer();
+            const byteArray = new Uint8Array(arrayBuffer);
+
+            // Call the Go WASM function
+            const result = ProcessTapArray(byteArray, amplify, gap, silenceOnStart, frequency);
+
+            // Check for errors
+            if (result.error !== null && result.error !== undefined) {
+                showResult('Error: ' + result.error, 'error');
+                return;
+            }
+
+            // Check if data exists
+            if (!result.data || result.data.length === 0) {
+                showResult('Error: No data returned from conversion', 'error');
+                return;
+            }
+
+            // Create WAV file and download
+            const blob = new Blob([result.data], { type: 'audio/wav' });
+
+            // Generate filename: replace .tap extension with .wav
+            const originalName = file.name;
+            const wavFileName = originalName.replace(/\.(tap|TAP)$/i, '.wav');
+
+            // Create download link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = wavFileName;
+            document.body.appendChild(a);
+            a.click();
+
+            // Cleanup
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+
+            showResult('Conversion successful!\nFile saved as: ' + wavFileName + '\nSize: ' + result.data.length + ' bytes', 'success');
+        } catch (error) {
+            showResult('Error during conversion: ' + error.message, 'error');
+            console.error(error);
+        }
+    }
+
+    function showResult(message, type) {
+        const resultDiv = document.getElementById('result');
+        resultDiv.textContent = message;
+        resultDiv.className = 'result ' + type;
+        resultDiv.style.display = 'block';
+    }
+</script>
+</body>
+</html>

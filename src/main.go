@@ -31,8 +31,8 @@ func ParseTap(tapReader io.Reader) ([]*zxtape.TapeBlock, error) {
 	return result, nil
 }
 
-func BytesToReadCloser(data []byte) io.ReadCloser {
-	return io.NopCloser(bytes.NewReader(data))
+func BytesToReader(data []byte) io.Reader {
+	return bytes.NewReader(data)
 }
 
 func PrepareWav(tape []*zxtape.TapeBlock, amplify bool, gapBetweenFiles int, silenceOnStart bool, freq int, consumer *func(string)) ([]byte, error) {

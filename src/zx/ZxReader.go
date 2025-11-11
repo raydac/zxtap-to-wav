@@ -2,22 +2,28 @@ package zx
 
 import (
 	"io"
+	"encoding/binary"
 )
 
 func ReadZxShort(in io.Reader) (int, error) {
-	arr := make([]byte, 2)
-	_, err := io.ReadAtLeast(in, arr, 2)
-	if err != nil {
+    var value int16
+	if err := binary.Read(in, binary.LittleEndian, &value); err != nil {
 		return 0, err
 	}
-	return int(arr[1])<<8 | int(arr[0]), nil
+	return int(value), nil
+}
+
+func ReadZxArray(in io.Reader, n int) ([]byte, error) {
+    buf := make([]byte, n)
+	_, err := io.ReadFull(in, buf)
+	if err != nil {
+		return nil, err
+	}
+	return buf, nil
 }
 
 func ReadZxByte(in io.Reader) (byte, error) {
-	arr := make([]byte, 1)
-	_, err := io.ReadAtLeast(in, arr, 1)
-	if err != nil {
-		return 0, err
-	}
-	return arr[0], nil
+    var b [1]byte
+	_, err := io.ReadFull(in, b[:])
+	return b[0], err
 }

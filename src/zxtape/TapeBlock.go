@@ -5,6 +5,7 @@ import (
 	"io"
 	wav "github.com/raydac/zxtap-wav"
 	zx "github.com/raydac/zxtap-zx"
+	"errors"
 )
 
 type TapeBlock struct {
@@ -125,9 +126,12 @@ func ReadTapeBlock(reader io.Reader) (*TapeBlock, error) {
         return nil, nil
     }
 
-	data := make([]byte, length-1)
+    if length < 0 || length > 0xFFFF {
+        return nil,  errors.New("wrong tape block length, may be non-tape format")
+    }
 
-	_, err = io.ReadAtLeast(reader, data, len(data))
+    var data []byte
+	data, err = zx.ReadZxArray(reader, length - 1)
 	if err != nil {
 		return nil, err
 	}
