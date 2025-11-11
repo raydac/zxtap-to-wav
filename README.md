@@ -5,6 +5,10 @@ A simple command-line utility that converts [.TAP](http://fileformats.archivetea
 
 For a similar tool that converts binary files into WAV format for the BK-0010 personal computer, check out [bkbin2wav](https://github.com/raydac/bkbin2wav).
 
+# Online version of the converter
+
+There is an [online WASM-based version of the converter](https://www.igormaznitsa.com/tap2wav/index.html) that you can freely use in any browser that supports JavaScript and WASM.
+
 # How to build?
 
 Simply clone the project and build it using Maven with the command:

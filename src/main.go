@@ -6,8 +6,8 @@ import (
 	"io"
 )
 
-const __AUTHOR__ = "Igor Maznitsa (http://www.igormaznitsa.com)"
-const __VERSION__ = "1.0.4"
+const __AUTHOR__ = "Igor Maznitsa (https://www.igormaznitsa.com)"
+const __VERSION__ = "1.0.5"
 const __PROJECTURI__ = "https://github.com/raydac/zxtap-to-wav"
 
 func ParseTap(tapReader io.Reader) ([]*zxtape.TapeBlock, error) {
