@@ -10,7 +10,7 @@ const __AUTHOR__ = "Igor Maznitsa (https://www.igormaznitsa.com)"
 const __VERSION__ = "1.0.5"
 const __PROJECTURI__ = "https://github.com/raydac/zxtap-to-wav"
 
-func ParseTap(tapReader io.Reader) ([]*zxtape.TapeBlock, error) {
+func ParseTap(tapReader io.Reader, consumer *func(string)) ([]*zxtape.TapeBlock, error) {
 	var result []*zxtape.TapeBlock
 
 	for {
@@ -18,7 +18,10 @@ func ParseTap(tapReader io.Reader) ([]*zxtape.TapeBlock, error) {
 		if err == nil {
 			if block != nil {
 				result = append(result, block)
-			}
+                if consumer != nil && *consumer != nil {
+					(*consumer)(block.ToString())
+				}
+            }
 		} else {
 			if err == io.EOF {
 				break

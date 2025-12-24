@@ -1,16 +1,55 @@
 package zxtape
 
 import (
+	"fmt"
 	"bytes"
 	"io"
+	"strconv"
 	wav "github.com/raydac/zxtap-wav"
 	zx "github.com/raydac/zxtap-zx"
-	"errors"
 )
 
 type TapeBlock struct {
 	Data     *[]byte
 	Checksum byte
+}
+
+func (tb TapeBlock) ToString() string {
+    data := *tb.Data
+
+    blockFlag := data[0] & 0xFF
+    blockType := data[1] & 0xFF
+    nameBytes := data[2:12]
+
+    var result []byte
+    for _, b := range nameBytes {
+        if b < 0x20 || b > 0x7E {
+            result = append(result, '.')
+        } else {
+            result = append(result, b)
+        }
+    }
+
+    var flagStr string
+    switch blockFlag & 0xFF {
+        case 0: flagStr = "HEADER"
+        case 255: flagStr = "DATA"
+        default:
+            flagStr = strconv.Itoa(int(blockFlag) & 0xFF)
+    }
+
+    var typeStr string
+    switch blockType & 0xFF {
+        case 0: typeStr = "BASIC"
+        case 1: typeStr = "NUMERIC_ARRAY"
+        case 2: typeStr = "CHAR_ARRAY"
+        case 3: typeStr = "CODE"
+        default:
+            typeStr = strconv.Itoa(int(blockFlag) & 0xFF)
+    }
+
+    name := string(bytes.TrimRight(result, "\x00"))
+    return fmt.Sprintf("\"%s\", %s,  %s, %d byte(s)", name, flagStr, typeStr, len(data))
 }
 
 func writeDataByte(data byte, hi byte, lo byte, writer *bytes.Buffer, freq int) error {
@@ -127,7 +166,7 @@ func ReadTapeBlock(reader io.Reader) (*TapeBlock, error) {
     }
 
     if length < 0 || length > 0xFFFF {
-        return nil,  errors.New("wrong tape block length, may be non-tape format")
+        return nil,  fmt.Errorf("wrong tape block length, may be non-tape format: %d", length)
     }
 
     var data []byte

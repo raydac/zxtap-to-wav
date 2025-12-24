@@ -10,7 +10,7 @@ func ReadZxShort(in io.Reader) (int, error) {
 	if err := binary.Read(in, binary.LittleEndian, &value); err != nil {
 		return 0, err
 	}
-	return int(value), nil
+	return int(value) & 0xFFFF, nil
 }
 
 func ReadZxArray(in io.Reader, n int) ([]byte, error) {

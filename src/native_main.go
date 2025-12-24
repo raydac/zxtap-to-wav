@@ -45,7 +45,7 @@ func header() {
 `, __PROJECTURI__, __AUTHOR__, __VERSION__)
 }
 
-func loadTapFile(filePath string) ([]*zxtape.TapeBlock, error) {
+func loadTapFile(filePath string, consumer *func(string)) ([]*zxtape.TapeBlock, error) {
 
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -53,21 +53,17 @@ func loadTapFile(filePath string) ([]*zxtape.TapeBlock, error) {
 	}
 	defer file.Close()
 
-	return ParseTap(file)
+	return ParseTap(file, consumer)
 }
 
-func saveWav(tape []*zxtape.TapeBlock, filePath string, freq int) error {
+func saveWav(tape []*zxtape.TapeBlock, filePath string, freq int, consumer *func(string)) error {
 	file, err := os.Create(filePath)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
-	consoleOutput := func(s string) {
-		fmt.Print(s)
-	}
-
-	var data, errPrepare = PrepareWav(tape, amplify, gapBetweenFiles, silenceOnStart, freq, &consoleOutput)
+	var data, errPrepare = PrepareWav(tape, amplify, gapBetweenFiles, silenceOnStart, freq, consumer)
 	if errPrepare != nil {
 		return errPrepare
 	}
@@ -94,6 +90,14 @@ func sizeToHuman(path string) string {
 func main() {
 	header()
 
+	consoleOutputLn := func(s string) {
+		fmt.Println(s)
+	}
+
+	consoleOutput := func(s string) {
+		fmt.Print(s)
+	}
+
 	flag.Parse()
 
 	if freq < 11025 {
@@ -109,12 +113,12 @@ func main() {
 		fileOutName = filepath.Dir(fileInName) + string(os.PathSeparator) + extractName(fileInName) + ".wav"
 	}
 
-	parsedTape, err := loadTapFile(fileInName)
+	parsedTape, err := loadTapFile(fileInName, &consoleOutputLn)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = saveWav(parsedTape, fileOutName, freq)
+	err = saveWav(parsedTape, fileOutName, freq, &consoleOutput)
 	if err != nil {
 		log.Fatal(err)
 	}

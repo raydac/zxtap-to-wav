@@ -12,8 +12,8 @@
 
     <properties>
         <base.target.name>zxtap2wav-1.0.5</base.target.name>
-        <gosdk.wrapper.version>1.1.0</gosdk.wrapper.version>
-        <golang.sdk>1.25.4</golang.sdk>
+        <gosdk.wrapper.version>1.1.2</gosdk.wrapper.version>
+        <golang.sdk>1.25.5</golang.sdk>
 
         <go.target.folder>${project.basedir}${file.separator}bin</go.target.folder>
         <go.source.folder>${project.basedir}${file.separator}src</go.source.folder>
