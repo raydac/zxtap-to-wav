@@ -7,7 +7,7 @@ import (
 )
 
 const __AUTHOR__ = "Igor Maznitsa (https://www.igormaznitsa.com)"
-const __VERSION__ = "1.0.6"
+const __VERSION__ = "1.0.7"
 const __PROJECTURI__ = "https://github.com/raydac/zxtap-to-wav"
 
 func ParseTap(tapReader io.Reader, consumer *func(string)) ([]*zxtape.TapeBlock, error) {

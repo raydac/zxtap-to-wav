@@ -4,14 +4,14 @@
 
     <groupId>com.igormaznitsa</groupId>
     <artifactId>zxtap-to-wav</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>ZX TAP to WAV</name>
     <description>Converter of ZX TAP files into WAV files</description>
 
     <properties>
-        <base.target.name>zxtap2wav-1.0.6</base.target.name>
+        <base.target.name>zxtap2wav-1.0.7</base.target.name>
         <gosdk.wrapper.version>1.1.2</gosdk.wrapper.version>
         <golang.sdk>1.25.5</golang.sdk>
 
