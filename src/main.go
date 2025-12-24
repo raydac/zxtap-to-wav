@@ -18,10 +18,10 @@ func ParseTap(tapReader io.Reader, consumer *func(string)) ([]*zxtape.TapeBlock,
 		if err == nil {
 			if block != nil {
 				result = append(result, block)
-                if consumer != nil && *consumer != nil {
+				if consumer != nil && *consumer != nil {
 					(*consumer)(block.ToString())
 				}
-            }
+			}
 		} else {
 			if err == io.EOF {
 				break

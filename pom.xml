@@ -4,7 +4,7 @@
 
     <groupId>com.igormaznitsa</groupId>
     <artifactId>zxtap-to-wav</artifactId>
-    <version>1.0.6-SNAPSHOT</version>
+    <version>1.0.6</version>
     <packaging>pom</packaging>
 
     <name>ZX TAP to WAV</name>
@@ -34,7 +34,7 @@
             <id>raydac</id>
             <name>Igor Maznitsa</name>
             <email>rrg4400@gmail.com</email>
-            <url>http://www.igormaznitsa.com</url>
+            <url>https://www.igormaznitsa.com</url>
             <timezone>+2</timezone>
             <roles>
                 <role>developer</role>

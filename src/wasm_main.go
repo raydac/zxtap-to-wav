@@ -3,10 +3,10 @@
 package main
 
 import (
+	"bytes"
 	wav "github.com/raydac/zxtap-wav"
 	"strconv"
 	"syscall/js"
-	"bytes"
 )
 
 func ProcessTapArray(this js.Value, args []js.Value) interface{} {
@@ -53,7 +53,7 @@ func ProcessTapArray(this js.Value, args []js.Value) interface{} {
 		})
 	}
 
-	parsedTape, err := ParseTap(BytesToReader(data),  &consoleOutput)
+	parsedTape, err := ParseTap(BytesToReader(data), &consoleOutput)
 	if err != nil {
 		return js.ValueOf(map[string]interface{}{
 			"data":  nil,

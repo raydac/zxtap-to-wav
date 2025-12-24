@@ -17,6 +17,10 @@ type TapeBlock struct {
 func (tb TapeBlock) ToString() string {
     data := *tb.Data
 
+    if len(data) < 17 {
+        return fmt.Sprintf(" <UNKNOWN>  , ______,  ______, %d byte(s)", len(data))
+    }
+
     blockFlag := data[0] & 0xFF
     blockType := data[1] & 0xFF
     nameBytes := data[2:12]
@@ -33,7 +37,7 @@ func (tb TapeBlock) ToString() string {
     var flagStr string
     switch blockFlag & 0xFF {
         case 0: flagStr = "HEADER"
-        case 255: flagStr = "DATA"
+        case 255: flagStr = " DATA "
         default:
             flagStr = strconv.Itoa(int(blockFlag) & 0xFF)
     }
@@ -41,9 +45,9 @@ func (tb TapeBlock) ToString() string {
     var typeStr string
     switch blockType & 0xFF {
         case 0: typeStr = "BASIC"
-        case 1: typeStr = "NUMERIC_ARRAY"
-        case 2: typeStr = "CHAR_ARRAY"
-        case 3: typeStr = "CODE"
+        case 1: typeStr = "NUMERIC"
+        case 2: typeStr = "ALPHANUMERIC"
+        case 3: typeStr = "BYTES"
         default:
             typeStr = strconv.Itoa(int(blockFlag) & 0xFF)
     }
